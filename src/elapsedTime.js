@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class ElapsedTime extends Component {
     state = {
         status: false,
-        runningTime: 0,
+        decisecond: 0,
         seconds: 0,
         minutes: 0,
         hours: 0
@@ -22,20 +22,20 @@ class ElapsedTime extends Component {
             let minutesCounter = 0;
             let hoursCounter = 0;
             this.timer = setInterval(() => {
-                decisecondCounter = this.state.runningTime + 1
+                decisecondCounter = this.state.decisecond + 1
                 if (decisecondCounter === 10) {
                     secondsCounter++
                     decisecondCounter = 0
-                    if (secondsCounter === 10) {
+                    if (secondsCounter === 60) {
                         minutesCounter++
                         secondsCounter = 0
-                        if (minutesCounter === 10) {
+                        if (minutesCounter === 60) {
                             hoursCounter++
                             minutesCounter = 0
                         }
                     }
                 }
-                this.setState({ runningTime: decisecondCounter, seconds: secondsCounter, minutes: minutesCounter, hours: hoursCounter, status: true }) 
+                this.setState({ decisecond: decisecondCounter, seconds: secondsCounter, minutes: minutesCounter, hours: hoursCounter, status: true }) 
             },100)
         }
     }
@@ -46,7 +46,7 @@ class ElapsedTime extends Component {
         clearInterval(this.timer)
         this.setState({
             status: false,
-            runningTime: 0,
+            decisecond: 0,
             seconds: 0,
             minutes: 0,
             hours: 0
@@ -54,12 +54,15 @@ class ElapsedTime extends Component {
     }
 
     render() {
-        const { status, runningTime, minutes, hours, seconds } = this.state;
+        const { status, decisecond, seconds, minutes, hours } = this.state;
         return(
-            <div>
-                <p>{hours} hours {minutes} minutes {seconds} seconds {runningTime} decims</p> 
+            <div className='ElapsedTime'>
+                <h1>Stopwatch</h1>
+                <p>{hours} hours {minutes} minutes {seconds} seconds {decisecond} deciseconds</p> 
+                <div className='Buttons'>
                 <button onClick={(e) => this.handleClick(e)}>{status ? 'Stop' : 'Start'}</button>
                 <button onClick={(e) => this.resetTime(e)}>Reset</button>
+                </div>
             </div>
         )
     }

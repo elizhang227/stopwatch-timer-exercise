@@ -2,6 +2,8 @@ import React from 'react';
 
 import ElapsedTime from './elapsedTime';
 
+import './elapsedTime.css';
+
 
 function App() {
   return (
