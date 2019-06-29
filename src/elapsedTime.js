@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 class ElapsedTime extends Component {
     state = {
         status: false,
-        runningTime: 0
+        runningTime: 0,
+        seconds: 0,
+        minutes: 0,
+        hours: 0
     }
 
     handleClick = async (e) => {
@@ -14,35 +17,40 @@ class ElapsedTime extends Component {
             clearInterval(this.timer)
             this.setState({ status: false })
         } else {
+            let decisecondCounter = 0;
+            let secondsCounter = 0;
+            let minutesCounter = 0;
+            let hoursCounter = 0;
             this.timer = setInterval(() => {
-                let newTime = 0;
-                if (newTime === 60) {
-                    newTime = 0;
-                    this.setState({ runningTime: newTime, status: true })
-                } else {
-                    newTime = this.state.runningTime + 1
-                    this.setState({ runningTime: newTime, status: true }) 
+                decisecondCounter = this.state.runningTime + 1
+                if (decisecondCounter === 10) {
+                    secondsCounter++
+                    decisecondCounter = 0
+                    if (secondsCounter === 10) {
+                        minutesCounter++
+                        secondsCounter = 0
+                        if (minutesCounter === 10) {
+                            hoursCounter++
+                            minutesCounter = 0
+                        }
+                    }
                 }
-            },1)
+                this.setState({ runningTime: decisecondCounter, seconds: secondsCounter, minutes: minutesCounter, hours: hoursCounter, status: true }) 
+            },100)
         }
     }
 
-    // stopTime = async (e) => {
-    //     e.preventDefault();
+    resetTime = async (e) => {
+        e.preventDefault();
 
-    //     if (this.state.status) {
-    //         clearInterval()
-    //     }
-    // }
+
+    }
 
     render() {
-        const { status, runningTime } = this.state;
+        const { status, runningTime, minutes, hours, seconds } = this.state;
         return(
             <div>
-                <p>{runningTime}</p> 
-                {/* {setInterval(() => {
-                    return i = i + 1;
-                }, 1000)} */}
+                <p>{hours} hours {minutes} minutes {seconds} seconds {runningTime} decims</p> 
                 <button onClick={(e) => this.handleClick(e)}>{status ? 'Stop' : 'Start'}</button>
                 <button>reset</button>
             </div>
