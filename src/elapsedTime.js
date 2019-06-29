@@ -43,7 +43,14 @@ class ElapsedTime extends Component {
     resetTime = async (e) => {
         e.preventDefault();
 
-
+        clearInterval(this.timer)
+        this.setState({
+            status: false,
+            runningTime: 0,
+            seconds: 0,
+            minutes: 0,
+            hours: 0
+        })
     }
 
     render() {
@@ -52,7 +59,7 @@ class ElapsedTime extends Component {
             <div>
                 <p>{hours} hours {minutes} minutes {seconds} seconds {runningTime} decims</p> 
                 <button onClick={(e) => this.handleClick(e)}>{status ? 'Stop' : 'Start'}</button>
-                <button>reset</button>
+                <button onClick={(e) => this.resetTime(e)}>Reset</button>
             </div>
         )
     }
