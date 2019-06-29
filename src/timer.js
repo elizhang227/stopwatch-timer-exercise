@@ -19,25 +19,31 @@ class Timer extends Component {
             this.setState({ status: false })
         } else {
             let decisecondCounter = 0;
-            let secondsCounter = 60;
+            let secondsCounter = 59;
             let minutesCounter = this.state.test - 1;
-            let hoursCounter = 0;
-            //let initial = this.state.test
+            let hoursCounter = this.state.hours;
+            console.log('this is hrs counter', hoursCounter)
             this.timer = setInterval(() => {
                 decisecondCounter = this.state.decisecond + 1
                 if (decisecondCounter === 10) {
                     secondsCounter--
                     decisecondCounter = 0
-                    if (secondsCounter === 55) {
+                    if (secondsCounter === 55) { // 55 -> 0
                         minutesCounter--
-                        secondsCounter = 60
-                        if (minutesCounter === 60) {
+                        secondsCounter = 59
+                        if (minutesCounter === 59) {
                             hoursCounter++
                             minutesCounter = 0
                         }
                     }
                 }
-                this.setState({ decisecond: decisecondCounter, seconds: secondsCounter, minutes: minutesCounter, hours: hoursCounter, status: true }) 
+                this.setState({ 
+                    decisecond: decisecondCounter, 
+                    seconds: secondsCounter, 
+                    minutes: minutesCounter, 
+                    hours: hoursCounter, 
+                    status: true 
+                }) 
             },100)
         }
     }
@@ -57,10 +63,21 @@ class Timer extends Component {
 
     clearInput = async (e) => {
         e.preventDefault();
-        const set = this.state.test
-        console.log(set)
+        let set = this.state.test
+        let mins;
+        let hours = 0;
+        if (set == 60) { // runs with == not === 
+            mins = 0
+            hours = 1
+        } else if (set > 60 && set < set + 60) {
+            hours = Math.floor(set / 60)
+            mins = set % 60
+        } else {
+            mins = set
+        }
         this.setState({
-            minutes: set
+            minutes: mins,
+            hours: hours
         })
         e.target.reset();
     }
@@ -68,7 +85,6 @@ class Timer extends Component {
     logInput = async (e) => {
         e.preventDefault();
 
-        console.log('this is value', e.target.value)
         let num = e.target.value
         this.setState({
             test: num
@@ -76,11 +92,11 @@ class Timer extends Component {
     }
 
     render() {
-        const { status, decisecond, seconds, minutes, hours, test } = this.state;
+        const { status, seconds, minutes, hours } = this.state;
         return(
             <div className='ElapsedTime'>
                 <h1>Timer</h1>
-                <p>{minutes} minutes {seconds} seconds</p>
+                <p>{hours} hours {minutes} minutes {seconds} seconds</p>
                 <form onSubmit={(e) => this.clearInput(e)}>
                     <input type="text" name="time" placeholder="Enter Desired Minutes" onChange={(e) => this.logInput(e)}></input> 
                 </form>
