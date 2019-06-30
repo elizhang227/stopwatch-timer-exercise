@@ -36,7 +36,7 @@ class Timer extends Component {
                 if (decisecondCounter === 10) {
                     secondsCounter--
                     decisecondCounter = 0
-                    if (secondsCounter === 55) { // 55 -> 0
+                    if (secondsCounter === 0) { // 55 -> 0
                         if (minutesCounter == 0) { // 59 -> 0
                             hoursCounter--
                             minutesCounter = 59
@@ -103,7 +103,7 @@ class Timer extends Component {
     render() {
         const { status, seconds, minutes, hours } = this.state;
         return(
-            <div className='ElapsedTime'>
+            <div className='Timer'>
                 <h1>Timer</h1>
                 <p>{hours} hours {minutes} minutes {seconds} seconds</p>
                 <form onSubmit={(e) => this.clearInput(e)}>

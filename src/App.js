@@ -4,6 +4,7 @@ import ElapsedTime from './elapsedTime';
 import Timer from './timer';
 
 import './elapsedTime.css';
+import './timer.css';
 
 
 function App() {
