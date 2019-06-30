@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 class Timer extends Component {
     state = {
@@ -36,8 +35,15 @@ class Timer extends Component {
                 if (decisecondCounter === 10) {
                     secondsCounter--
                     decisecondCounter = 0
-                    if (secondsCounter === 0) { // 55 -> 0
-                        if (minutesCounter == 0) { // 59 -> 0
+                    if (secondsCounter === 55) { // 55 -> 0
+                        if (minutesCounter === 0 & secondsCounter === 55) {
+                            clearInterval(this.timer)
+                            secondsCounter = 0
+                            alert('Timer finished')
+                            this.setState({
+                                status: false
+                            })
+                        } else if (minutesCounter == 0) { // 59 -> 0
                             hoursCounter--
                             minutesCounter = 59
                         } else {
