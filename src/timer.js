@@ -20,20 +20,29 @@ class Timer extends Component {
         } else {
             let decisecondCounter = 0;
             let secondsCounter = 59;
-            let minutesCounter = this.state.test - 1;
+            let minutesCounter = this.state.test;
             let hoursCounter = this.state.hours;
-            console.log('this is hrs counter', hoursCounter)
+            if (minutesCounter < 60) {
+                minutesCounter = this.state.test - 1
+            } else if (minutesCounter == 60) {
+                minutesCounter = 59
+                hoursCounter--
+            } else {
+                minutesCounter = this.state.test % 60 - 1
+                hoursCounter = Math.floor(this.state.test / 60)
+            }
             this.timer = setInterval(() => {
                 decisecondCounter = this.state.decisecond + 1
                 if (decisecondCounter === 10) {
                     secondsCounter--
                     decisecondCounter = 0
                     if (secondsCounter === 55) { // 55 -> 0
-                        minutesCounter--
-                        secondsCounter = 59
-                        if (minutesCounter === 59) {
-                            hoursCounter++
-                            minutesCounter = 0
+                        if (minutesCounter == 0) { // 59 -> 0
+                            hoursCounter--
+                            minutesCounter = 59
+                        } else {
+                            minutesCounter--
+                            secondsCounter = 59
                         }
                     }
                 }
